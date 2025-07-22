@@ -8,24 +8,25 @@ import HomePage from './components/HomePage';
 
 function App() {
 const route = createBrowserRouter([
-    {
-      path: "/",
-      element: <Signup />
-    },
-    {
-      path: "/login",
-      element: <Login />
-    },
-    {
-       path: "/home",
-       element: <HomePage />
-    }
-  ]);
+  {
+    path: "/",
+    element: <HomePage />   // <-- default route now shows HomePage
+  },
+  {
+    path: "/login",
+    element: <Login />
+  },
+  {
+    path: "/signup",
+    element: <Signup />     // moved signup to a separate path
+  }
+]);
 
-  return (
-    <div className="App">
-      <RouterProvider router={route}></RouterProvider>
-    </div>
-  );
+return (
+  <div className="App">
+    <RouterProvider router={route} />
+  </div>
+);
+
 }
 export default App;

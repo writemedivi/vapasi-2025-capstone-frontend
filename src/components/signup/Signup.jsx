@@ -3,12 +3,18 @@ import "./signup.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import { Container,  Navbar, Nav } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
+
+
 const Signup = () => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
+
+    const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -30,7 +36,26 @@ const Signup = () => {
   };
 
   return (
-    <div className="addUser">
+<div>
+
+<Navbar bg="primary" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+             <Nav>
+              <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
+              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
+            </Nav>
+            
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+       <div className="addUser">
+
+       
+
       <h3>Sign Up</h3>
       <form className="addUserForm" onSubmit={handleSubmit}>
         <div className="inputGroup">
@@ -43,7 +68,7 @@ const Signup = () => {
             autoComplete="off"
             placeholder="Enter your name"
           />
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
@@ -52,7 +77,7 @@ const Signup = () => {
             autoComplete="off"
             placeholder="Enter your Email"
           />
-          <label htmlFor="Password">Password:</label>
+          <label htmlFor="Password">Password</label>
           <input
            type="password"
             name="password"
@@ -73,6 +98,10 @@ const Signup = () => {
         </Link>
       </div>
     </div>
+
+</div>
+    
+   
   );
 };
 

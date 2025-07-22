@@ -3,7 +3,7 @@ import "./login.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import { Container,  Navbar, Nav } from 'react-bootstrap';
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
@@ -71,11 +71,27 @@ const handleSubmit = async (e) => {
 
 
   return (
-    <div className="addUser">
+    <div >
+
+      <Navbar bg="primary" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
+          <Navbar.Toggle />
+          <Navbar.Collapse className="justify-content-end">
+             <Nav>
+              <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
+              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
+            </Nav>
+            
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+
+      <div className="addUser">
       <h3>Sign in</h3>
       <form className="addUserForm" onSubmit={handleSubmit} noValidate>
         <div className="inputGroup">
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email</label>
           <input
             type="email"
             name="email"
@@ -89,7 +105,7 @@ const handleSubmit = async (e) => {
             <small style={{ color: "red" }}>{errors.email}</small>
           )}
 
-          <label htmlFor="password">Password:</label>
+          <label htmlFor="password">Password</label>
           <input
             type="password"
             name="password"
@@ -118,10 +134,12 @@ const handleSubmit = async (e) => {
       </form>
       <div className="login">
         <p>Don't have Account? </p>
-        <Link to="/" className="btn btn-success">
+        <Link to="/signup" className="btn btn-success">
           Sign Up
         </Link>
       </div>
+    </div>
+
     </div>
   );
 };
