@@ -9,6 +9,7 @@ import AdminDashboard from './components/admin/AdminDashboard';
 import About from './components/about/About';
 import UserDashboard from "./components/user/UserDashboard";
 import LoanApplication from './pages/LoanApplication';
+import Faq from './components/faqs/Faq';
 
 
 function App() {
@@ -41,7 +42,12 @@ const route = createBrowserRouter([
     {
       path: "/apply-loan",
       element: <LoanApplication />
+    },
+    {
+      path:"/faqs",
+      element:<Faq/>
     }
+
   
 ]);
 

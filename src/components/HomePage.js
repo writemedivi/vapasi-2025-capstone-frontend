@@ -60,7 +60,7 @@ function HomePage() {
               {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
             </Nav>
             <Nav>
-              <Nav.Link onClick={() => navigate("/login")}>FAQs</Nav.Link>
+              <Nav.Link onClick={() => navigate("/faqs")}>FAQs</Nav.Link>
               {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
             </Nav>
             <Nav>
