@@ -6,6 +6,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Signup from './components/signup/Signup';
 import HomePage from './components/HomePage';
 import AdminDashboard from './components/admin/AdminDashboard';
+import About from './components/about/About';
 
 function App() {
 const route = createBrowserRouter([
@@ -24,7 +25,11 @@ const route = createBrowserRouter([
 
   {
     path: "/admin-dashboard",
-    element: <AdminDashboard />
+    element: <AdminDashboard />},
+  {
+    path:"/about",
+    element:<About/>
+
   }
   
 ]);

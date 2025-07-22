@@ -23,7 +23,7 @@ function HomePage() {
 
   const calculateEMI = () => {
     const principal = parseFloat(loanAmount);
-    const rate = parseFloat(0.85) / 12 / 100;
+    const rate = parseFloat(8.5) / 12 /100;
     const n = parseFloat(tenure) * 12;
 
     if (!principal || !rate || !n) {
@@ -56,7 +56,7 @@ function HomePage() {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Nav>
-              <Nav.Link onClick={() => navigate("/")}>About Us</Nav.Link>
+              <Nav.Link onClick={() => navigate("/about")}>About Us</Nav.Link>
               {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
             </Nav>
             <Nav>
@@ -108,7 +108,14 @@ function HomePage() {
                 </Form>
                 {eligibleAmount && (
                   <div className="alert alert-info mt-3">
-                    <strong>Eligible Loan Amount:</strong> ₹{eligibleAmount}
+                    <strong>Eligible Loan Amount:</strong> {''}
+                    {
+                        new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        minimumFractionDigits: 2,
+                       }).format(eligibleAmount)
+                    }
                   </div>
                 )}
               </Card.Body>
@@ -168,7 +175,14 @@ function HomePage() {
 
                 {emi && (
                   <div className="alert alert-success mt-3">
-                    <strong>Your Monthly EMI:</strong> ₹{emi}
+                    <strong>Your Monthly EMI:</strong> {''}
+                    {
+                        new Intl.NumberFormat('en-IN', {
+                        style: 'currency',
+                        currency: 'INR',
+                        minimumFractionDigits: 2,
+                       }).format(emi)
+                    }
                   </div>
                 )}
               </Card.Body>
