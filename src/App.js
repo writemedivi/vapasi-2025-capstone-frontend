@@ -7,6 +7,9 @@ import Signup from './components/signup/Signup';
 import HomePage from './components/HomePage';
 import AdminDashboard from './components/admin/AdminDashboard';
 import About from './components/about/About';
+import UserDashboard from "./components/user/UserDashboard";
+import LoanApplication from './pages/LoanApplication';
+
 
 function App() {
 const route = createBrowserRouter([
@@ -30,7 +33,15 @@ const route = createBrowserRouter([
     path:"/about",
     element:<About/>
 
-  }
+  },
+    {
+      path: "/customer-dashboard", // or /customer-dashboard if you prefer
+      element: <UserDashboard />
+    },
+    {
+      path: "/apply-loan",
+      element: <LoanApplication />
+    }
   
 ]);
 

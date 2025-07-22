@@ -37,7 +37,6 @@ function About() {
           fontWeight: 'bold',
         }}
       >
-        <h1 className="text-center"></h1>
       </div>
 
       {/* About Content */}
