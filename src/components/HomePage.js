@@ -46,6 +46,14 @@ function HomePage() {
           <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
+             <Nav>
+              <Nav.Link onClick={() => navigate('/')}>About Us</Nav.Link>
+              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
+            </Nav>
+             <Nav>
+              <Nav.Link onClick={() => navigate('/login')}>FAQs</Nav.Link>
+              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
+            </Nav>
             <Nav>
               <Nav.Link onClick={() => navigate('/login')}>Login</Nav.Link>
               {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
@@ -101,7 +109,7 @@ function HomePage() {
                     />
                   </Form.Group>
 
-                  <Button variant="primary" size ="sm" onClick={calculateEMI}>
+                  <Button variant="success" size ="sm" onClick={calculateEMI}>
                     Calculate EMI
                   </Button>
                 </Form>
