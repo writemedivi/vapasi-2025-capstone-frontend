@@ -26,10 +26,18 @@ function HomePage() {
     const rate = parseFloat(8.5) / 12 /100;
     const n = parseFloat(tenure) * 12;
 
-    if (!principal || !rate || !n) {
+    
+
+    if (!principal || !rate || !n || principal<0) {
       setEmi(null);
       return;
     }
+
+    if (principal < 100000) {
+    setEmi(null);
+    alert('Loan amount should be at least ₹1,00,000');
+    return;
+  }
 
     const emiVal =
       (principal * rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
@@ -38,7 +46,7 @@ function HomePage() {
 
   const calculateEligibility = () => {
     const income = parseFloat(monthlyIncome);
-    if (!income) {
+    if (!income || income <0) {
       setEligibleAmount(null);
       return;
     }
@@ -131,12 +139,12 @@ function HomePage() {
               <Card.Body>
                 <Form>
                   <Form.Group className="mb-1">
-                    <Form.Label>Loan Amount (₹)</Form.Label>
+                    <Form.Label>Loan Amount(Min loan amount: ₹1000,000)</Form.Label>
                     <Form.Control
                       type="number"
                       value={loanAmount}
                       onChange={(e) => setLoanAmount(e.target.value)}
-                      placeholder="e.g. 500000"
+                      placeholder="e.g. 100000"
                     />
                   </Form.Group>
 
