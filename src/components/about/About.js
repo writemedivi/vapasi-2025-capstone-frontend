@@ -37,29 +37,36 @@ function About() {
           fontWeight: 'bold',
         }}
       >
+      
       </div>
 
       {/* About Content */}
       <Container className="my-5">
-        <Row className="justify-content-center">
-          <Col md={8}>
-            <h2>Who We Are</h2>
-            <p>
-              At <strong>VW HomeLoan</strong>, we are dedicated to making the home loan process
-              simpler, faster, and more transparent for every individual.
-            </p>
-            <h4 >What We Offer</h4>
-            <ul>
-              <li>Instant EMI and Eligibility Calculators</li>
-              <li>Simple and secure loan application tracking</li>
-              <li>Personalized offers from top lenders</li>
-              <li>24/7 customer support</li>
-            </ul>
-            <h4>Our Mission</h4>
-            <p>
-              Empower every Indian household with the financial tools to achieve
-              their dream of owning a home.
-            </p>
+  <Row className="justify-content-start">
+    <Col md={10} lg={8}>
+      <h2 className="text-start">Who We Are</h2>
+      <p className="text-start">
+        At <strong>HomeLoanPro</strong>, we are dedicated to making the home loan process
+        simpler, faster, and more transparent for every individual.
+      </p>
+            <h4 className="text-start mt-4">What We Offer</h4>
+      <div className="text-start custom-list">
+        <p>✔ Instant EMI and Eligibility Calculators</p>
+        <p>✔ Simple and secure loan application tracking</p>
+        <p>✔ Personalized offers from top lenders</p>
+        <p>✔ 24/7 customer support</p>
+      </div>
+            <h4 className="text-start mt-4">Our Mission</h4>
+      <p className="text-start">
+        Empower every Indian household with the financial tools to achieve
+        their dream of owning a home.
+      </p>
+      <h4 className="text-start mt-4">Contact Information</h4>
+      <p className="text-start mb-1"><strong>Address:</strong> 123 HomeLoan Street, Bengaluru, India</p>
+      <p className="text-start mb-1"><strong>Phone:</strong> +91 98765 43210</p>
+      <p className="text-start mb-1"><strong>Email:</strong> support@homeloanpro.in</p>
+      <p className="text-start"><strong>Working Hours:</strong> Mon–Sat, 9 AM – 7 PM</p>
+            
           </Col>
         </Row>
       </Container>
