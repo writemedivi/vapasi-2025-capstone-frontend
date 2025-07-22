@@ -5,6 +5,7 @@ import Login from './components/login/Login';
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Signup from './components/signup/Signup';
 import HomePage from './components/HomePage';
+import AdminDashboard from './components/admin/AdminDashboard';
 
 function App() {
 const route = createBrowserRouter([
@@ -19,7 +20,13 @@ const route = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />     // moved signup to a separate path
+  },
+
+  {
+    path: "/admin-dashboard",
+    element: <AdminDashboard />
   }
+  
 ]);
 
 return (
