@@ -38,6 +38,16 @@ const Login = () => {
       valid = false;
     }
 
+  //   const PasswordRegex = /^(?=.[a-z])(?=.[A-Z])(?=.\\d)(?=.[@$!%?&])[A-Za-z\\d@$!%?&]{6,}$/;
+    
+  //   if (!PasswordRegex.test(loginData.password)) {
+  //     newErrors.password="Not a strong password"
+  //     valid = false;
+  //   } 
+  //   setErrors(newErrors);
+  //   return valid;
+  // };
+
     if (loginData.password.length < 6) {
       newErrors.password = "Password must be at least 6 characters";
       valid = false;
@@ -46,6 +56,8 @@ const Login = () => {
     setErrors(newErrors);
     return valid;
   };
+
+
 
 const handleSubmit = async (e) => {
   e.preventDefault();
@@ -57,12 +69,12 @@ const handleSubmit = async (e) => {
 
   try {
     const response = await axios.post(
-      "http://localhost:8080/api/login",
+      "http://localhost:8080/users/login",
       loginData
     );
     console.log("Login successful", response.data);
     alert("Login successful!");
-    navigate("/dashboard");
+    navigate("/customer-dashboard");
   } catch (error) {
     console.error("Login failed", error);
     alert(error.response.data);

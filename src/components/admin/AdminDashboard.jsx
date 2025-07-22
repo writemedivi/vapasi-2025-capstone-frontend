@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
+import axios from "axios";
 
 const AdminDashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -59,6 +60,19 @@ const AdminDashboard = () => {
     setSelectedLoan(loan);
     setShowModal(true);
   };
+
+  const handleApprove = async (loanId) => {
+  try {
+    const response = await axios.put(`http://localhost:8080/loan/approve/${loanId}`);
+    alert("Loan approved successfully!");
+    setShowModal(false);
+    console.log(response.data);
+    // Reload the loan list or update state as needed
+  } catch (error) {
+    console.error("Error approving loan:", error);
+    alert("Failed to approve loan.");
+  }
+};
 
   return (
     <div>
@@ -154,28 +168,34 @@ const AdminDashboard = () => {
       </Container>
 
       {/* ✅ Loan Details Modal */}
-      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Loan Details</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedLoan && (
-            <div>
-              <p><strong>Name:</strong> {selectedLoan.name}</p>
-              <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
-              <p><strong>Status:</strong> {selectedLoan.status}</p>
-              <p><strong>Email:</strong> {selectedLoan.email}</p>
-              <p><strong>Mobile:</strong> {selectedLoan.mobile}</p>
-              <p><strong>PAN:</strong> {selectedLoan.pan}</p>
-            </div>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowModal(false)}>
-            Close
-          </Button>
-        </Modal.Footer>
-      </Modal>
+     <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+  <Modal.Header closeButton>
+    <Modal.Title>Loan Details</Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    {selectedLoan && (
+      <div>
+        <p><strong>Name:</strong> {selectedLoan.name}</p>
+        <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
+        <p><strong>Status:</strong> {selectedLoan.status}</p>
+        <p><strong>Email:</strong> {selectedLoan.email}</p>
+        <p><strong>Mobile:</strong> {selectedLoan.mobile}</p>
+        <p><strong>PAN:</strong> {selectedLoan.pan}</p>
+      </div>
+    )}
+  </Modal.Body>
+  <Modal.Footer>
+  <Button variant="secondary" onClick={() => setShowModal(false)}>
+    Close
+  </Button>
+{selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
+ selectedLoan?.status?.trim().toUpperCase() !== "INACTIVE" && (
+  <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
+    Approve
+  </Button>
+)}
+</Modal.Footer>
+</Modal>
     </div>
   );
 };
