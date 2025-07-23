@@ -35,11 +35,16 @@ const LoanApplication = () => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       errors.email = "Invalid Email Address";
     }
-    if (!formData.phone?.trim()) {
-      errors.phone = "Phone Number is required";
-    } else if (!/^\d{10}$/.test(formData.phone)) {
-      errors.phone = "Phone Number must be 10 digits";
+    if (!formData.mobileNo?.trim()) {
+      errors.mobileNo = "Phone Number is required";
+    } else if (!/^\d{10}$/.test(formData.mobileNo)) {
+      errors.mobileNo = "Phone Number must be 10 digits";
     }
+    if (!formData.address?.trim()) {
+    errors.address = "Address is required";
+  } else if (formData.address.trim().length < 5) {
+    errors.address = "Address must be at least 5 characters long";
+  }
     if (!formData.dob) errors.dob = "Date of Birth is required";
     if (!formData.gender) errors.gender = "Gender is required";
     return errors;
@@ -48,16 +53,16 @@ const LoanApplication = () => {
   // Step 2: Document Details
   const validateDocumentDetails = () => {
     const errors = {};
-    if (!formData.aadhar?.trim()) {
-      errors.aadhar = "Aadhar Number is required";
-    } else if (!/^\d{12}$/.test(formData.aadhar)) {
-      errors.aadhar = "Aadhar Number must be 12 digits";
+    if (!formData.aadharNo?.trim()) {
+      errors.aadharNo = "Aadhar Number is required";
+    } else if (!/^\d{12}$/.test(formData.aadharNo)) {
+      errors.aadharNo = "Aadhar Number must be 12 digits";
     }
 
-    if (!formData.pan?.trim()) {
-      errors.pan = "PAN Number is required";
-    } else if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(formData.pan)) {
-      errors.pan = "Invalid PAN Number format";
+    if (!formData.panNo?.trim()) {
+      errors.panNo = "PAN Number is required";
+    } else if (!/^[A-Z]{5}\d{4}[A-Z]$/.test(formData.panNo)) {
+      errors.panNo = "Invalid PAN Number format";
     }
     return errors;
   };
@@ -65,14 +70,20 @@ const LoanApplication = () => {
   // Step 3: Income and Property
   const validateIncomePropertyDetails = () => {
     const errors = {};
-    if (!formData.income || Number(formData.income) <= 0) {
-      errors.income = "Monthly Income must be a positive number";
+    if (!formData.propertyName?.trim()) {
+    errors.propertyName = "Property Name is required";
+  }
+    if (!formData.monthlyIncome || Number(formData.monthlyIncome) <= 0) {
+      errors.monthlyIncome = "Monthly Income must be a positive number";
     }
-    if (!formData.propertyLocation?.trim()) {
-      errors.propertyLocation = "Property Location is required";
+    if (!formData.location?.trim()) {
+      errors.location = "Property Location is required";
     }
-    if (!formData.propertyValue || Number(formData.propertyValue) <= 0) {
-      errors.propertyValue = "Property Value must be a positive number";
+    if (!formData.estimatedCost || Number(formData.estimatedCost) <= 0) {
+      errors.estimatedCost = "Property Value must be a positive number";
+    }
+    if (!formData.loanAmount || Number(formData.loanAmount) <= 0) {
+      errors.loanAmount = "Loan Amount must be a positive number";
     }
     return errors;
   };
@@ -114,15 +125,19 @@ const LoanApplication = () => {
     try {
       const formPayload = new FormData();
       for (const key in formData) {
+        if(key!=="aadharDoc" && key!=="panDoc")
+        {
         formPayload.append(key, formData[key]);
+        }
       }
 
+      const url="http://localhost:8080/users/"+localStorage.getItem("userId")+"/loan";
       const response = await axios.post(
-        "http://localhost:8080/users/applyloan",
+       url,
         formPayload,
        {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
           },
         }
       );

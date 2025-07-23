@@ -11,33 +11,36 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
     <Form>
       <h4>Income & Property Details</h4>
 
+      {/* New Property Name Field */}
       <Form.Group>
-        <Form.Label>Monthly Income</Form.Label>
+        <Form.Label>Property Name</Form.Label>
         <Form.Control
-          type="number"
-          name="income"
-          value={formData.income || ""}
+          type="text"
+          name="propertyName"
+          value={formData.propertyName || ""}
           onChange={handleChange}
-          isInvalid={!!formErrors?.income}
-          placeholder="Enter your monthly income"
+          isInvalid={!!formErrors?.propertyName}
+          placeholder="Enter the name of the property"
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.income}
+          {formErrors?.propertyName}
         </Form.Control.Feedback>
       </Form.Group>
+
+      
 
       <Form.Group>
         <Form.Label>Property Location</Form.Label>
         <Form.Control
           type="text"
-          name="propertyLocation"
-          value={formData.propertyLocation || ""}
+          name="location"
+          value={formData.location || ""}
           onChange={handleChange}
-          isInvalid={!!formErrors?.propertyLocation}
+          isInvalid={!!formErrors?.location}
           placeholder="Enter the property location"
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.propertyLocation}
+          {formErrors?.location}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -45,14 +48,43 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Label>Estimated Property Value</Form.Label>
         <Form.Control
           type="number"
-          name="propertyValue"
-          value={formData.propertyValue || ""}
+          name="estimatedCost"
+          value={formData.estimatedCost || ""}
           onChange={handleChange}
-          isInvalid={!!formErrors?.propertyValue}
+          isInvalid={!!formErrors?.estimatedCost}
           placeholder="Enter estimated property value"
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.propertyValue}
+          {formErrors?.estimatedCost}
+        </Form.Control.Feedback>
+      </Form.Group>
+      <Form.Group>
+        <Form.Label>Monthly Income</Form.Label>
+        <Form.Control
+          type="number"
+          name="monthlyIncome"
+          value={formData.monthlyIncome || ""}
+          onChange={handleChange}
+          isInvalid={!!formErrors?.monthlyIncome}
+          placeholder="Enter your monthly income"
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.monthlyIncome}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label>Loan Amount Required</Form.Label>
+        <Form.Control
+          type="number"
+          name="loanAmount"
+          value={formData.loanAmount || ""}
+          onChange={handleChange}
+          isInvalid={!!formErrors?.loanAmount}
+          placeholder="Enter the loan amount you are applying for"
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.loanAmount}
         </Form.Control.Feedback>
       </Form.Group>
     </Form>

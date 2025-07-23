@@ -16,14 +16,14 @@ const DocumentDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Label>Aadhar Number</Form.Label>
         <Form.Control
           type="text"
-          name="aadhar"
-          value={formData.aadhar || ""}
+          name="aadharNo"
+          value={formData.aadharNo || ""}
           onChange={handleChange}
-          isInvalid={!!formErrors?.aadhar}
+          isInvalid={!!formErrors?.aadharNo}
           placeholder="Enter your 12-digit Aadhar Number"
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.aadhar}
+          {formErrors?.aadharNo}
         </Form.Control.Feedback>
       </Form.Group>
 
@@ -31,14 +31,14 @@ const DocumentDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Label>PAN Number</Form.Label>
         <Form.Control
           type="text"
-          name="pan"
-          value={formData.pan || ""}
+          name="panNo"
+          value={formData.panNo || ""}
           onChange={handleChange}
-          isInvalid={!!formErrors?.pan}
+          isInvalid={!!formErrors?.panNo}
           placeholder="Enter your PAN Number"
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.pan}
+          {formErrors?.panNo}
         </Form.Control.Feedback>
       </Form.Group>
     </Form>

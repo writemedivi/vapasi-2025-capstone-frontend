@@ -1,4 +1,3 @@
-// src/components/ApplyLoan/PersonalDetails.jsx
 import React from "react";
 import { Form } from "react-bootstrap";
 
@@ -46,14 +45,30 @@ const PersonalDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Label>Phone Number</Form.Label>
         <Form.Control
           type="text"
-          name="phone"
-          value={formData.phone || ""}
+          name="mobileNo"
+          value={formData.mobileNo || ""}
           onChange={handleChange}
           placeholder="Enter your phone number"
-          isInvalid={!!formErrors?.phone}
+          isInvalid={!!formErrors?.mobileNo}
         />
         <Form.Control.Feedback type="invalid">
-          {formErrors?.phone}
+          {formErrors?.mobileNo}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      {/* New Address Field */}
+      <Form.Group>
+        <Form.Label>Address</Form.Label>
+        <Form.Control
+          type="text"
+          name="address"
+          value={formData.address || ""}
+          onChange={handleChange}
+          placeholder="Enter your address"
+          isInvalid={!!formErrors?.address}
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.address}
         </Form.Control.Feedback>
       </Form.Group>
 

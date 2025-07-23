@@ -16,10 +16,10 @@ const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
       <h4>Review Checklist</h4>
       <ul>
         <li>Personal Details: {formData.fullName}, {formData.email}</li>
-        <li>Aadhar: {formData.aadhar}</li>
-        <li>PAN: {formData.pan}</li>
-        <li>Monthly Income: ₹{formData.income}</li>
-        <li>Property: {formData.propertyLocation}, ₹{formData.propertyValue}</li>
+        <li>Aadhar: {formData.aadharNo}</li>
+        <li>PAN: {formData.panNo}</li>
+        <li>Monthly Income: ₹{formData.monthlyIncome}</li>
+        <li>Property: {formData.location}, ₹{formData.estimatedCost}</li>
       </ul>
 
       <div style={{ marginTop: "1em" }}>
