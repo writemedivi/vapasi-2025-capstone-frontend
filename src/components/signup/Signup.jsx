@@ -3,6 +3,7 @@ import "./signup.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Navbar, Nav } from "react-bootstrap";
+import Footer from "../Common/Footer/Footer";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -150,6 +151,7 @@ const Signup = () => {
           </Link>
         </div>
       </div>
+     <Footer />
     </div>
   );
 };

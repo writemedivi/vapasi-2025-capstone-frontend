@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container,  Navbar, Nav } from 'react-bootstrap';
+import Footer from "../Common/Footer/Footer";
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
@@ -151,7 +152,7 @@ const handleSubmit = async (e) => {
         </Link>
       </div>
     </div>
-
+     <Footer /> 
     </div>
   );
 };
