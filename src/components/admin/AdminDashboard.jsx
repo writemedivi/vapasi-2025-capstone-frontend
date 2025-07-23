@@ -8,39 +8,43 @@ import {
   Navbar,
   Nav,
   Modal,
-  Button,
+  Button
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import axios from "axios";
+import Footer from "../Common/Footer/Footer";
 
 const AdminDashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
   const [showModal, setShowModal] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
+  const [remarks, setRemarks] = useState("");
 
   const loanData = [
-    { id: 1, name: "Amit", amount: "₹5,00,000", status: "In Progress", email: "amit@example.com", mobile: "9876543210", pan: "ABCDE1234F" },
-    { id: 2, name: "Priya", amount: "₹10,00,000", status: "Pending", email: "priya@example.com", mobile: "7890123456", pan: "XYZAB5678C" },
-    { id: 3, name: "Rahul", amount: "₹3,00,000", status: "Inactive", email: "rahul@example.com", mobile: "9012345678", pan: "PQRST9012D" },
-    { id: 4, name: "Anjali", amount: "₹8,00,000", status: "In Progress", email: "anjali@example.com", mobile: "7654321098", pan: "LMNOP3456Z" },
+    { id: 1, name: "Amit", amount: "₹5,00,000", status: "Pending Admin Approval", email: "amit@example.com", mobile: "9876543210", pan: "ABCDE1234F" },
+    { id: 2, name: "Priya", amount: "₹10,00,000", status: "Pending Customer Approval", email: "priya@example.com", mobile: "7890123456", pan: "XYZAB5678C" },
+    { id: 3, name: "Rahul", amount: "₹3,00,000", status: "Approved", email: "rahul@example.com", mobile: "9012345678", pan: "PQRST9012D" },
+    { id: 4, name: "Anjali", amount: "₹8,00,000", status: "Rejected", email: "anjali@example.com", mobile: "7654321098", pan: "LMNOP3456Z" },
   ];
 
   const navigate = useNavigate();
-  const statusList = ["All", "In Progress", "Pending", "Inactive"];
+  const statusList = ["All", "Pending Admin Approval", "Pending Customer Approval", "Approved", "Rejected"];
 
   const statusColors = {
-    All: "#d6d8db",
-    "In Progress": "#cfe2ff",
-    Pending: "#fff3cd",
-    Inactive: "#f8d7da",
+    "All": "#d6d8db",
+    "Pending Admin Approval": "#cfe2ff",
+    "Pending Customer Approval": "#fff3cd",
+    "Approved": "#d1e7dd",
+    "Rejected": "#f8d7da"
   };
 
   const badgeTextColors = {
-    All: "#495057",
-    "In Progress": "#084298",
-    Pending: "#664d03",
-    Inactive: "#842029",
+    "All": "#495057",
+    "Pending Admin Approval": "#084298",
+    "Pending Customer Approval": "#664d03",
+    "Approved": "#155724",
+    "Rejected": "#842029"
   };
 
   const statusCounts = statusList.reduce((counts, status) => {
@@ -62,15 +66,27 @@ const AdminDashboard = () => {
   };
 
   const handleApprove = async (loanId) => {
+    try {
+      const response = await axios.put(`http://localhost:8080/loan/approve/${loanId}`);
+      alert("Loan approved successfully!");
+      setShowModal(false);
+      console.log(response.data);
+      // Reload the loan list or update state as needed
+    } catch (error) {
+      console.error("Error approving loan:", error);
+      alert("Failed to approve loan.");
+    }
+  };
+  const handleReject = async (loanId) => {
   try {
-    const response = await axios.put(`http://localhost:8080/loan/approve/${loanId}`);
-    alert("Loan approved successfully!");
+    const response = await axios.put(`http://localhost:8080/loan/reject/${loanId}`);
+    alert("Loan rejected successfully!");
     setShowModal(false);
     console.log(response.data);
-    // Reload the loan list or update state as needed
+    // Update loan list if needed
   } catch (error) {
-    console.error("Error approving loan:", error);
-    alert("Failed to approve loan.");
+    console.error("Error rejecting loan:", error);
+    alert("Failed to reject loan.");
   }
 };
 
@@ -88,17 +104,16 @@ const AdminDashboard = () => {
         </Container>
       </Navbar>
 
-      <Container className="mt-4">
+      <Container className="mt-4 flex-nowrap overflow-auto">
         <h3 className="mb-4 text-primary">Admin Dashboard</h3>
 
         <Row className="mb-4">
           {statusList.map((status) => (
-            <Col key={status} md={3}>
+            <Col key={status} xs="auto" className= "me-3" md={2}>
               <Card
                 onClick={() => setSelectedStatus(status)}
-                className={`mb-3 shadow-sm ${
-                  selectedStatus === status ? "border border-dark border-2" : ""
-                }`}
+                className={`shadow-sm ${selectedStatus === status ? "border border-dark border-2" : ""
+                  }`}
                 style={{
                   backgroundColor: statusColors[status],
                   cursor: "pointer",
@@ -168,35 +183,54 @@ const AdminDashboard = () => {
       </Container>
 
       {/* ✅ Loan Details Modal */}
-     <Modal show={showModal} onHide={() => setShowModal(false)} centered>
-  <Modal.Header closeButton>
-    <Modal.Title>Loan Details</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {selectedLoan && (
-      <div>
-        <p><strong>Name:</strong> {selectedLoan.name}</p>
-        <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
-        <p><strong>Status:</strong> {selectedLoan.status}</p>
-        <p><strong>Email:</strong> {selectedLoan.email}</p>
-        <p><strong>Mobile:</strong> {selectedLoan.mobile}</p>
-        <p><strong>PAN:</strong> {selectedLoan.pan}</p>
-      </div>
-    )}
-  </Modal.Body>
-  <Modal.Footer>
-  <Button variant="secondary" onClick={() => setShowModal(false)}>
-    Close
-  </Button>
-{selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
- selectedLoan?.status?.trim().toUpperCase() !== "INACTIVE" && (
-  <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
-    Approve
-  </Button>
-)}
-</Modal.Footer>
-</Modal>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Loan Details</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {selectedLoan && (
+            <div>
+              <p><strong>Name:</strong> {selectedLoan.name}</p>
+              <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
+              <p><strong>Status:</strong> {selectedLoan.status}</p>
+              <p><strong>Email:</strong> {selectedLoan.email}</p>
+              <p><strong>Mobile:</strong> {selectedLoan.mobile}</p>
+              <p><strong>PAN:</strong> {selectedLoan.pan}</p>
+            {/* Textbox for remarks */}
+        <div className="mt-3">
+          <label htmlFor="remarks"><strong>Remarks</strong></label>
+          <textarea
+            id="remarks"
+            className="form-control"
+            rows="3"
+            placeholder="Enter any comments or reason..."
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
+          />
+        </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          
+          {selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
+            selectedLoan?.status?.trim().toUpperCase() !== "REJECTED" && (
+              <>
+              <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
+                Approve
+              </Button>
+              <Button variant="danger" onClick={() => handleReject(selectedLoan.id)}>
+                Reject
+              </Button>
+            </>
+
+            )}
+         
+        </Modal.Footer>
+      </Modal>
+      <Footer />
     </div>
+
   );
 };
 
