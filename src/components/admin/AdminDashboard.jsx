@@ -23,7 +23,8 @@ const AdminDashboard = () => {
   const [loanData, setLoanData] = useState([]);
 
 
-  useEffect(() => {
+ // Add this outside useEffect
+const fetchLoanData = () => {
   axios.get("http://localhost:8080/admin/users")
     .then(response => {
       const formattedData = response.data.map((item) => ({
@@ -47,7 +48,13 @@ const AdminDashboard = () => {
       console.error("Error fetching users:", error);
       alert("Failed to load loan data");
     });
+};
+
+// Call it once on mount
+useEffect(() => {
+  fetchLoanData();
 }, []);
+
 
   const navigate = useNavigate();
   const statusList = ["All", "Pending Admin Approval", "Pending Customer Approval", "Approved", "Rejected"];
@@ -87,24 +94,26 @@ const AdminDashboard = () => {
   };
 
   const handleApprove = async () => {
-    try {
-      const response = await axios.put(`http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=approve`);
-      alert("Loan approved successfully!");
-      setShowModal(false);
-      console.log(response.data);
-      
-    } catch (error) {
-      console.error("Error approving loan:", error);
-      alert("Failed to approve loan.");
-    }
-  };
-  const handleReject = async (loanId) => {
   try {
-    const response = await axios.put(`http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=reject`);
+    await axios.put(
+      `http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=approve`
+    );
+    alert("Loan approved successfully!");
+    setShowModal(false);
+    fetchLoanData(); // 👈 reload updated data
+  } catch (error) {
+    console.error("Error approving loan:", error);
+    alert("Failed to approve loan.");
+  }
+};
+  const handleReject = async () => {
+  try {
+    await axios.put(
+      `http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=reject`
+    );
     alert("Loan rejected successfully!");
     setShowModal(false);
-    console.log(response.data);
-    
+    fetchLoanData(); // 👈 reload updated data
   } catch (error) {
     console.error("Error rejecting loan:", error);
     alert("Failed to reject loan.");
