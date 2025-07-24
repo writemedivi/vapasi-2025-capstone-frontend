@@ -60,6 +60,8 @@ const Signup = () => {
         
         const message = response.data.message || "Signup successful!";
             localStorage.setItem("userId", response.data.data.id);
+            localStorage.setItem("userName", response.data.data.name);
+
 
         alert(message);
 
