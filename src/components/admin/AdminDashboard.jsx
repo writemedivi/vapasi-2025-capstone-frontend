@@ -253,7 +253,23 @@ useEffect(() => {
             </div>
           )}
         </Modal.Body>
-  
+      <Modal.Footer>
+
+          {selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
+            selectedLoan?.status?.trim().toUpperCase() !== "REJECTED" && 
+            selectedLoan?.status?.trim().toUpperCase() !== "PENDING CUSTOMER APPROVAL" &&(
+              <>
+              <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
+                Approve
+              </Button>
+              <Button variant="danger" onClick={() => handleReject(selectedLoan.id)}>
+                Reject
+              </Button>
+            </>
+
+            )}
+
+        </Modal.Footer>
       </Modal>
       <Footer />
     </div>

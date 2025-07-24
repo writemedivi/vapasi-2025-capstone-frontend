@@ -5,7 +5,8 @@ import {
   Nav,
 } from "react-bootstrap";
 
-const Header = () => {
+const Header = (props) => {
+    const {screen = "default"} = props;
      const navigate = useNavigate();
     return(
     <Navbar bg="primary" variant="dark" expand="lg">
@@ -21,8 +22,13 @@ const Header = () => {
                     <Nav.Link onClick={() => navigate("/faqs")}>FAQs</Nav.Link>
                     {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
                 </Nav>
-                <Nav>
-                    <Nav.Link onClick={() => navigate("/login")}>Login</Nav.Link>
+                <Nav >
+                    {screen == "home"  || screen =="signup" || screen =="login" ? 
+                    (<Nav.Link onClick={() => navigate("/login")}>Login</Nav.Link>) : 
+                    (<Nav.Link onClick={() => navigate("/")}>Logout</Nav.Link>)
+                    
+                }
+                    
                     {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
                 </Nav>
             </Navbar.Collapse>

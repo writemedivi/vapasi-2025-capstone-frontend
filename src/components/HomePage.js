@@ -60,7 +60,7 @@ function HomePage() {
   return (
     <>
       {/* Navbar */}
-      <Header />
+      <Header  screen="home"/>
 
       {/* Hero Section */}
       <div className="bg-light text-center p-5">

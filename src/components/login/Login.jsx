@@ -96,7 +96,7 @@ else{
 
   return (
     <div >
-      <Header />
+      <Header screen="login"/>
 
       <div className="addUser">
       <h3>Login</h3>

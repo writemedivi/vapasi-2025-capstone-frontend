@@ -98,7 +98,7 @@ const Signup = () => {
 
   return (
     <div>
-      <Header />
+      <Header screen="signup"/>
       <div className="addUser">
         <h3>Sign Up</h3>
         <form className="addUserForm" onSubmit={handleSubmit}>
