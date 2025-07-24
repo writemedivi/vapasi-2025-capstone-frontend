@@ -1,70 +1,122 @@
-# Getting Started with Create React App
+# 🏡 Home Loan Management System
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A user-friendly online platform that simplifies the process of home loan application, tracking, and EMI management. Built with React, this system provides a hassle-free experience for both users and administrators.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+##  Project Overview
 
-### `npm start`
+Availing home loans in India is often time-consuming and complex. This application streamlines the loan application and approval process by enabling users to:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Apply for loans digitally
+- Calculate EMI and loan eligibility
+- Track application status in real-time
+- Manage documents and personal information
+- Access admin-level approvals and verifications
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+##  Users
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- **Admin**: Manages loan approvals, application reviews, and system data.
+- **Customer**: Registers, applies for loans, uploads documents, and tracks loan progress.
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+##  Features
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+-  Home page with company overview and service info
+- User authentication (Login/Register)
+-  EMI & Eligibility Calculators
+-  Loan application submission with document upload
+-  Loan status tracking via Application ID & DOB
+-  Admin dashboard for approvals
+-  FAQ section for user support
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+##  Tech Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend**: React.js, HTML5, CSS3, JavaScript
+- **Backend**: (To be integrated —  Spring Boot)
+- **Database**: (To be integrated —  MySQL)
+- **Authentication**: Spring Security - Bcrypt
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+##  Modules Overview
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### 1. Home Page
+- Overview of services
+- Quick links to registration and login
+- Access to calculators
 
-## Learn More
+### 2. User Authentication
+- Email & password based registration/login
+- Role-based access (Admin/Customer)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### 3. Loan Application
+- Personal details (Name, DOB, PAN, Aadhar, etc.)
+- Property & income information
+- Document upload
+- Checklist verification
+- Application ID & verification appointment generation
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 4. Loan Tracker
+- Track application status using:
+  - Application ID
+  - Date of Birth
+- Status stages:
+  - Sent for Verification
+  - Under Final Approval
+  - Approved / Rejected
 
-### Code Splitting
+### 5. Calculators
+- **Eligibility Calculator**
+  - `Loan Amount = 60 × (0.6 × Net Monthly Salary)`
+- **EMI Calculator**
+  - `EMI = P × R × [(1 + R)^n / ((1 + R)^n - 1)]`
+  - Interest Rate fixed at **8.5%**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### 6. Account Creation
+- Auto account generation post-approval
+- Funds disbursement info
 
-### Analyzing the Bundle Size
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 📁 Folder Structure
 
-### Making a Progressive Web App
+```bash
+home-loan-app/
+├── public/
+├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── pages/
+│   ├── services/
+│   ├── utils/
+│   ├── App.js
+│   └── index.js
+├── .gitignore
+├── package.json
+└── README.md
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+```
+---
 
-### Advanced Configuration
+# Clone the repository
+git clone https://github.com/writemedivi/vapasi-2025-capstone-frontend.git
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Navigate into the project directory
+cd home-loan-app
 
-### Deployment
+### Install dependencies
+npm install
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+### Run the development server
+npm start
 
-### `npm run build` fails to minify
+---
+###  Contributed by
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Team: VapasiWorks 2025 Batch
