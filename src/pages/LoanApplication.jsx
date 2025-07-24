@@ -1,5 +1,6 @@
 // src/pages/LoanApplication.jsx
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DocumentDetails from "../components/user/applyLoan/DocumentDetails";
 import IncomePropertyDetails from "../components/user/applyLoan/IncomePropertyDetails";
@@ -11,6 +12,7 @@ import Footer from "../components/Common/Footer/Footer";
 import { Button, Container } from "react-bootstrap";
 
 const LoanApplication = () => {
+  const navigate = useNavigate();
   const initialSteps = [
     { id: 1, step: 1, completed: false, stepName: "Personal Details" },
     { id: 2, step: 2, completed: false, stepName: "Document Details" },
@@ -85,6 +87,16 @@ const LoanApplication = () => {
     if (!formData.loanAmount || Number(formData.loanAmount) <= 0) {
       errors.loanAmount = "Loan Amount must be a positive number";
     }
+    if (!formData.emi || Number(formData.emi) <= 0) {
+    errors.emi = "EMI must be a positive number";
+  }
+
+  // ✅ New: Tenure validation
+  if (!formData.tenure || Number(formData.tenure) <= 0) {
+    errors.tenure = "Loan Tenure must be a positive number";
+  } else if (!Number.isInteger(Number(formData.tenure))) {
+    errors.tenure = "Loan Tenure must be an integer";
+  }
     return errors;
   };
 
@@ -144,6 +156,7 @@ const LoanApplication = () => {
 
       if (response.status === 200 || response.status === 201) {
         alert("Loan application submitted successfully!");
+        navigate("/customer-dashboard");
         // Optionally reset formData and state
         // setFormData({});
         // setCurrentStep(1);

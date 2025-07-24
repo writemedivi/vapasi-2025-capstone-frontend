@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
 
 const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
@@ -7,11 +7,44 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+  // EMI calculation logic
+  const calculateEMI = () => {
+    const principal = parseFloat(formData.loanAmount);
+    const rate = 8.5 / 12 / 100; // monthly interest rate (8.5% annual)
+    const n = parseFloat(formData.tenure)*12; // assuming tenure in months
+
+    if (!principal || !rate || !n || principal < 0) {
+      setFormData((prev) => ({ ...prev, emi: "" }));
+      return;
+    }
+
+    if (principal < 100000) {
+      setFormData((prev) => ({ ...prev, emi: "" }));
+      alert("Loan amount should be at least ₹1,00,000");
+      return;
+    }
+
+    const emi =
+      (principal * rate * Math.pow(1 + rate, n)) /
+      (Math.pow(1 + rate, n) - 1);
+
+    setFormData((prev) => ({
+      ...prev,
+      emi: Math.round(emi),
+    }));
+  };
+
+  // Recalculate EMI when loanAmount or tenure changes
+  useEffect(() => {
+    if (formData.loanAmount && formData.tenure) {
+      calculateEMI();
+    }
+  }, [formData.loanAmount, formData.tenure]);
+
   return (
     <Form>
       <h4>Income & Property Details</h4>
 
-      {/* New Property Name Field */}
       <Form.Group>
         <Form.Label>Property Name</Form.Label>
         <Form.Control
@@ -26,8 +59,6 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
           {formErrors?.propertyName}
         </Form.Control.Feedback>
       </Form.Group>
-
-      
 
       <Form.Group>
         <Form.Label>Property Location</Form.Label>
@@ -58,6 +89,7 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
           {formErrors?.estimatedCost}
         </Form.Control.Feedback>
       </Form.Group>
+
       <Form.Group>
         <Form.Label>Monthly Income</Form.Label>
         <Form.Control
@@ -85,6 +117,36 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         />
         <Form.Control.Feedback type="invalid">
           {formErrors?.loanAmount}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label>Loan Tenure (in years)</Form.Label>
+        <Form.Control
+          type="number"
+          name="tenure"
+          value={formData.tenure || ""}
+          onChange={handleChange}
+          isInvalid={!!formErrors?.tenure}
+          placeholder="Enter loan tenure in years"
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.tenure}
+        </Form.Control.Feedback>
+      </Form.Group>
+
+      <Form.Group>
+        <Form.Label>Estimated EMI (<strong>Rate of Interest is 8.5%</strong>)</Form.Label>
+        <Form.Control
+          type="number"
+          name="emi"
+          value={formData.emi || ""}
+          readOnly
+          isInvalid={!!formErrors?.emi}
+          placeholder="Calculated EMI will appear here"
+        />
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.emi}
         </Form.Control.Feedback>
       </Form.Group>
     </Form>

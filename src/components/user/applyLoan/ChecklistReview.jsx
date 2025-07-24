@@ -20,6 +20,8 @@ const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
         <li>PAN: {formData.panNo}</li>
         <li>Monthly Income: ₹{formData.monthlyIncome}</li>
         <li>Property: {formData.location}, ₹{formData.estimatedCost}</li>
+        <li>EMI Amount:{formData.emi}</li>
+        <li>EMI Tenure:{formData.tenure}</li>
       </ul>
 
       <div style={{ marginTop: "1em" }}>
