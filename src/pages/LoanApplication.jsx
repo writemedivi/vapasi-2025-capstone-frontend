@@ -19,6 +19,8 @@ const LoanApplication = () => {
     { id: 4, step: 4, completed: false, stepName: "Checklist Review" },
   ];
 
+
+
   const [steps, setSteps] = useState(initialSteps);
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState({});
@@ -237,9 +239,9 @@ const LoanApplication = () => {
             ))}
           </div>
         </div>
-
+<div className="mt-4">
         {renderStep()}
-
+</div>
         <div style={{ marginTop: "1rem" }}>
           {currentStep !== 1 && (
             <Button

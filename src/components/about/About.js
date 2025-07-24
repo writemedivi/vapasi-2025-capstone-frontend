@@ -3,26 +3,14 @@ import { Container, Row, Col, Navbar, Nav } from 'react-bootstrap';
 import backgroundImg from '../../assets/homeloan-hero.jpg';
 import { useNavigate } from "react-router-dom";
 import Footer from '../Common/Footer/Footer';
+import Header from '../Common/Header/Header';
 
 
 function About() {
   const navigate = useNavigate();
   return (
     <div>
-      <Navbar bg="primary" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
-              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
-            </Nav>
-
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
+      <Header />
 
       <div className="about-us-page">
         {/* Hero Section */}

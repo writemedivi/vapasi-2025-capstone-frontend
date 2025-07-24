@@ -14,6 +14,8 @@ import { useNavigate } from "react-router-dom";
 import { BsEye } from "react-icons/bs";
 import axios from "axios";
 import Footer from "../Common/Footer/Footer";
+import Header from "../Common/Header/Header";
+
 
 const AdminDashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState("All");
@@ -121,8 +123,10 @@ useEffect(() => {
 };
 
   return (
+     <> 
+    <Header />
     <div>
-      <Navbar bg="primary" variant="dark" expand="lg">
+      {/* <Navbar bg="primary" variant="dark" expand="lg">
         <Container>
           <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
           <Navbar.Toggle />
@@ -132,12 +136,12 @@ useEffect(() => {
             </Nav>
           </Navbar.Collapse>
         </Container>
-      </Navbar>
+      </Navbar> */}
 
       <Container className="mt-4 flex-nowrap overflow-auto">
         <h3 className="mb-4 text-primary">Admin Dashboard</h3>
 
-        <Row className="mb-4">
+        <Row className="mb-5">
           {statusList.map((status) => (
             <Col key={status} xs="auto" className= "me-3" md={2}>
               <Card
@@ -148,6 +152,7 @@ useEffect(() => {
                   backgroundColor: statusColors[status],
                   cursor: "pointer",
                   transition: "transform 0.2s ease",
+                  minHeight: "140px"
                 }}
                 onMouseEnter={(e) =>
                   (e.currentTarget.style.transform = "scale(1.03)")
@@ -165,7 +170,7 @@ useEffect(() => {
           ))}
         </Row>
 
-        <h5 className="mb-3 text-secondary">
+        <h5 className="mb-3 ">
           {selectedStatus} Loan Applications
         </h5>
 
@@ -200,7 +205,7 @@ useEffect(() => {
                     {loan.status}
                   </span>
                 </td>
-                <td>
+                <td > 
                   <BsEye
                     role="button"
                     title="View Details"
@@ -248,26 +253,11 @@ useEffect(() => {
             </div>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          
-          {selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
-            selectedLoan?.status?.trim().toUpperCase() !== "REJECTED" && 
-            selectedLoan?.status?.trim().toUpperCase() !== "PENDING CUSTOMER APPROVAL" &&(
-              <>
-              <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
-                Approve
-              </Button>
-              <Button variant="danger" onClick={() => handleReject(selectedLoan.id)}>
-                Reject
-              </Button>
-            </>
-
-            )}
-         
-        </Modal.Footer>
+  
       </Modal>
       <Footer />
     </div>
+       </>
 
   );
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import { Container, Accordion, Navbar, Nav } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
 import Footer from '../Common/Footer/Footer';
+import Header from '../Common/Header/Header';
 
 
 const Faq = () => {
@@ -9,19 +10,7 @@ const Faq = () => {
   const navigate = useNavigate();
   return (
     <div>
-      <Navbar bg="primary" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
-              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
-            </Nav>
-
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Header />
 
       <Container className="my-5">
         <h2 className="mb-4 text-start">Frequently Asked Questions</h2>

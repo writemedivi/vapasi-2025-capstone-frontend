@@ -1,11 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form } from "react-bootstrap";
 
 const PersonalDetails = ({ formData, setFormData, formErrors }) => {
+
+    const getUser = localStorage.getItem("user")
+   const userDetails = getUser?JSON.parse(getUser): null ;
+   console.log("userDetails" ,userDetails);
+
+const get18YearsAgoDate = () => {
+  const today = new Date();
+  today.setFullYear(today.getFullYear() - 18);
+  return today.toISOString().split("T")[0]; // Format: yyyy-mm-dd
+};
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
+
+  useEffect(() => {
+    setFormData({...formData, fullName: userDetails.name || "", email: userDetails.email || "" })
+  }, [] )
+
 
   return (
     <Form>
@@ -20,6 +36,7 @@ const PersonalDetails = ({ formData, setFormData, formErrors }) => {
           onChange={handleChange}
           placeholder="Enter your full name"
           isInvalid={!!formErrors?.fullName}
+          disabled
         />
         <Form.Control.Feedback type="invalid">
           {formErrors?.fullName}
@@ -35,6 +52,7 @@ const PersonalDetails = ({ formData, setFormData, formErrors }) => {
           onChange={handleChange}
           placeholder="Enter your email"
           isInvalid={!!formErrors?.email}
+          disabled
         />
         <Form.Control.Feedback type="invalid">
           {formErrors?.email}
@@ -80,6 +98,7 @@ const PersonalDetails = ({ formData, setFormData, formErrors }) => {
           value={formData.dob || ""}
           onChange={handleChange}
           isInvalid={!!formErrors?.dob}
+          max={get18YearsAgoDate()}
         />
         <Form.Control.Feedback type="invalid">
           {formErrors?.dob}

@@ -1,0 +1,11 @@
+.check-list  {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.check-list li::before {
+  content: "✔️ ";           /* Adds tick before each list item */
+  color: green;             /* Style the tick */
+  font-weight: bold;
+}

@@ -5,6 +5,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Container,  Navbar, Nav } from 'react-bootstrap';
 import Footer from "../Common/Footer/Footer";
+import Header from "../Common/Header/Header";
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
 
@@ -77,7 +78,15 @@ const handleSubmit = async (e) => {
     localStorage.setItem("userId", response.data.data.id);
     localStorage.setItem("userName", response.data.data.name);
 
-    navigate("/customer-dashboard");
+    localStorage.setItem("user",JSON.stringify(response.data.data) );
+
+
+    if(response.data.data.role == "Customer"){
+navigate("/customer-dashboard");
+}
+else{
+  navigate("/admin-dashboard");
+}
   } catch (error) {
     console.error("Login failed", error);
     alert(error.response.data);
@@ -87,23 +96,10 @@ const handleSubmit = async (e) => {
 
   return (
     <div >
-
-      <Navbar bg="primary" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-             <Nav>
-              <Nav.Link onClick={() => navigate('/')}>Home</Nav.Link>
-              {/* <Nav.Link onClick={() => navigate('/register')}>Register</Nav.Link> */}
-            </Nav>
-            
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
+      <Header />
 
       <div className="addUser">
-      <h3>Sign in</h3>
+      <h3>Login</h3>
       <form className="addUserForm" onSubmit={handleSubmit} noValidate>
         <div className="inputGroup">
           <label htmlFor="email">Email</label>

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Modal, Button } from "react-bootstrap";
 
+import "./checkListStyle.css";
+
 const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
   const [showModal, setShowModal] = useState(false);
 
@@ -16,15 +18,15 @@ const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
 
   return (
     <div>
-      <h4>Review Checklist</h4>
-      <ul>
-        <li>Personal Details: {formData.fullName}, {formData.email}</li>
-        <li>Aadhar: {formData.aadharNo}</li>
-        <li>PAN: {formData.panNo}</li>
-       <li>Monthly Income: {formatCurrency(formData.monthlyIncome)}</li>
-        <li>Property: {formData.location}, {formatCurrency(formData.estimatedCost)}</li>
-        <li>Monthly EMI Amount: {formatCurrency(formData.emi)}</li>
-        <li>EMI Tenure:{formData.tenure}</li>
+      <h4 >Review Checklist</h4>
+      <ul className="check-list">
+        <li><strong>Personal Details : </strong>{formData.fullName}, {formData.email}</li>
+        <li><strong>Aadhar : </strong>{formData.aadharNo}</li>
+        <li><strong>PAN : </strong>{formData.panNo}</li>
+       <li><strong>Monthly Income : </strong>{formatCurrency(formData.monthlyIncome)}</li>
+        <li><strong>Property : </strong>{formData.location} : {formatCurrency(formData.estimatedCost)}</li>
+        <li><strong>Monthly EMI Amount: </strong>{formatCurrency(formData.emi)}</li>
+        <li><strong>EMI Tenure :</strong>{formData.tenure}</li>
       </ul>
 
       <div style={{ marginTop: "1em" }}>

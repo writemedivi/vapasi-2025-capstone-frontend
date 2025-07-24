@@ -22,8 +22,7 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
     }
 
     const emi =
-      (principal * rate * Math.pow(1 + rate, n)) /
-      (Math.pow(1 + rate, n) - 1);
+      (principal * rate * Math.pow(1 + rate, n)) / (Math.pow(1 + rate, n) - 1);
 
     setFormData((prev) => ({
       ...prev,
@@ -49,7 +48,11 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
     if (requestedLoan < 100000) {
       setLoanWarning("Minimum loan amount is ₹1,00,000.");
     } else if (requestedLoan > maxEligible) {
-      setLoanWarning(`Requested amount exceeds eligibility. Max allowed: ₹${maxEligible.toFixed(0)}.`);
+      setLoanWarning(
+        `Requested amount exceeds eligibility. Max allowed: ₹${maxEligible.toFixed(
+          0
+        )}.`
+      );
     } else {
       setLoanWarning(""); // Valid case
     }
@@ -103,6 +106,7 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Control
           type="number"
           name="estimatedCost"
+          min={0}
           value={formData.estimatedCost || ""}
           onChange={handleChange}
           isInvalid={!!formErrors?.estimatedCost}
@@ -122,6 +126,7 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
           onChange={handleChange}
           isInvalid={!!formErrors?.monthlyIncome}
           placeholder="Enter your monthly income"
+          min={0}
         />
         <Form.Control.Feedback type="invalid">
           {formErrors?.monthlyIncome}
@@ -137,6 +142,7 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Label>Loan Amount Required</Form.Label>
         <Form.Control
           type="number"
+          min={100000}
           name="loanAmount"
           value={formData.loanAmount || ""}
           onChange={handleChange}
@@ -146,34 +152,32 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Control.Feedback type="invalid">
           {formErrors?.loanAmount}
         </Form.Control.Feedback>
-        {loanWarning && (
-          <small style={{ color: "red" }}>{loanWarning}</small>
-        )}
+        {loanWarning && <small style={{ color: "red" }}>{loanWarning}</small>}
       </Form.Group>
 
       <Form.Group>
-  <Form.Label>Loan Tenure (in years)</Form.Label>
-  <Form.Control
-    as="select"
-    name="tenure"
-    value={formData.tenure || ""}
-    onChange={handleChange}
-    isInvalid={!!formErrors?.tenure}
-  >
-    <option value="">Select tenure</option>
-    <option value="5">5 Years</option>
-    <option value="10">10 Years</option>
-    <option value="15">15 Years</option>
-    <option value="20">20 Years</option>
-  </Form.Control>
-  <Form.Control.Feedback type="invalid">
-    {formErrors?.tenure}
-  </Form.Control.Feedback>
-</Form.Group>
-
+        <Form.Label>Loan Tenure (in years)</Form.Label>
+        <Form.Control
+          as="select"
+          name="tenure"
+          value={formData.tenure || ""}
+          onChange={handleChange}
+          isInvalid={!!formErrors?.tenure}
+        >
+          <option value="5">5 Years</option>
+          <option value="10">10 Years</option>
+          <option value="15">15 Years</option>
+          <option value="20">20 Years</option>
+        </Form.Control>
+        <Form.Control.Feedback type="invalid">
+          {formErrors?.tenure}
+        </Form.Control.Feedback>
+      </Form.Group>
 
       <Form.Group>
-        <Form.Label>Estimated EMI (<strong>Rate of Interest is 8.5%</strong>)</Form.Label>
+        <Form.Label>
+          Estimated EMI (<strong>Rate of Interest is 8.5%</strong>)
+        </Form.Label>
         <Form.Control
           type="number"
           name="emi"

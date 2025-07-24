@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Container, Navbar, Nav } from "react-bootstrap";
 import Footer from "../Common/Footer/Footer";
+import Header from "../Common/Header/Header";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -16,13 +17,15 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-   const validate = () => {
+  const validate = () => {
     const newErrors = {};
     const nameRegex = /^[A-Za-z ]{1,30}$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!formData.name || !nameRegex.test(formData.name)) {
-      newErrors.name = "Name should contain only letters (max 30 characters)";
+    if (!formData.name) {
+      newErrors.name = "Name is required";
+    } else if (formData.name && !nameRegex.test(formData.name)) {
+      newErrors.name = "Invalid Name (max 30 characters)";
     }
 
     if (!formData.email || !emailRegex.test(formData.email)) {
@@ -36,12 +39,10 @@ const Signup = () => {
     return newErrors;
   };
 
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
-     setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
-
+    setErrors((prevErrors) => ({ ...prevErrors, [e.target.name]: "" }));
   };
 
   const handleSubmit = async (e) => {
@@ -54,53 +55,48 @@ const Signup = () => {
         const response = await axios.post(
           "http://localhost:8080/users/signup",
           formData
-        ); if (response.status === 201 || response.status === 200) {
-        // Backend indicates success
-        console.log("Signup Response:", response.data);
-        
-        const message = response.data.message || "Signup successful!";
-            localStorage.setItem("userId", response.data.data.id);
+        );
+        if (response.status === 201 || response.status === 200) {
+          // Backend indicates success
+          console.log("Signup Response:", response.data);
 
-        alert(message);
+          const message = response.data.message || "Signup successful!";
+          localStorage.setItem("userId", response.data.data.id);
 
-        // Navigate based on role or success
-        navigate("/customer-dashboard");
-      } else {
-        // Unexpected success response
-        alert("Something went wrong. Please try again.");
-      }
-    } catch (error) {
-      if (error.response) {
-        // Server responded with an error status code
-        console.error("Server error:", error.response.data);
-        alert(error.response.data.message || "Signup failed!");
-      } else if (error.request) {
-        // Request was made but no response
-        console.error("No response from server:", error.request);
-        alert("Server not reachable. Please try again later.");
-      } else {
-        // Other errors
-        console.error("Error:", error.message);
-        alert("An error occurred. Please try again.");
+          localStorage.setItem("user", JSON.stringify(response.data.data));
+
+          // alert(message);
+          if (response.data.data.role == "Customer") {
+            navigate("/customer-dashboard");
+          } else {
+            navigate("/admin-dashboard");
+          }
+          // Navigate based on role or success
+        } else {
+          // Unexpected success response
+          alert("Something went wrong. Please try again.");
+        }
+      } catch (error) {
+        if (error.response) {
+          // Server responded with an error status code
+          console.error("Server error:", error.response.data);
+          alert(error.response.data.message || "Signup failed!");
+        } else if (error.request) {
+          // Request was made but no response
+          console.error("No response from server:", error.request);
+          alert("Server not reachable. Please try again later.");
+        } else {
+          // Other errors
+          console.error("Error:", error.message);
+          alert("An error occurred. Please try again.");
+        }
       }
     }
-  }
-};
+  };
 
   return (
     <div>
-      <Navbar bg="primary" variant="dark" expand="lg">
-        <Container>
-          <Navbar.Brand href="#">🏠 VW Home Loan</Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Nav>
-              <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-
+      <Header />
       <div className="addUser">
         <h3>Sign Up</h3>
         <form className="addUserForm" onSubmit={handleSubmit}>
@@ -118,7 +114,7 @@ const Signup = () => {
 
             <label htmlFor="email">Email:</label>
             <input
-              type="email"
+              type="text"
               name="email"
               value={formData.email}
               onChange={handleChange}
@@ -153,7 +149,7 @@ const Signup = () => {
           </Link>
         </div>
       </div>
-     <Footer />
+      <Footer />
     </div>
   );
 };
