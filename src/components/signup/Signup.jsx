@@ -57,8 +57,10 @@ const Signup = () => {
         ); if (response.status === 201 || response.status === 200) {
         // Backend indicates success
         console.log("Signup Response:", response.data);
-
+        
         const message = response.data.message || "Signup successful!";
+            localStorage.setItem("userId", response.data.data.id);
+
         alert(message);
 
         // Navigate based on role or success
