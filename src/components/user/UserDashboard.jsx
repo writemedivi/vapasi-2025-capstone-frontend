@@ -20,6 +20,23 @@ const UserDashboard = () => {
   const [applications, setApplications] = useState([]);
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [canApply, setCanApply] = useState(true);
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
+    if (userId) {
+      axios
+        .get(`http://localhost:8080/users/${userId}/loan/check-active`)
+        .then((response) => {
+          setCanApply(response.data === false); // if no active loan, allow apply
+        })
+        .catch((error) => {
+          console.error("Failed to check active loan:", error);
+          setCanApply(false); // fallback: allow apply if error
+        });
+    }
+  }, []);
 
   useEffect(() => {
     const customerId = localStorage.getItem("customerId");
@@ -63,14 +80,13 @@ const UserDashboard = () => {
 
   const handleCustomerApprove = async (applicationNo) => {
     try {
-      
-      const userId=localStorage.getItem("userId");
+      const userId = localStorage.getItem("userId");
       const response = await axios.put(
-      `http://localhost:8080/users/${userId}/loan/${applicationNo}`,
-      {
-        status: "Approved",
-      }
-    );
+        `http://localhost:8080/users/${userId}/loan/${applicationNo}`,
+        {
+          status: "Approved",
+        }
+      );
       alert("Loan approved successfully!");
       setShowModal(false);
       console.log(response.data);
@@ -81,24 +97,24 @@ const UserDashboard = () => {
     }
   };
   const handleCustomerReject = async (applicationNo) => {
-  try {
-          const userId=localStorage.getItem("userId");
+    try {
+      const userId = localStorage.getItem("userId");
 
       const response = await axios.put(
-      `http://localhost:8080/users/${userId}/loan/${applicationNo}`,
-      {
-        status: "Rejected",
-      }
-    );
-    alert("Loan rejected successfully!");
-    setShowModal(false);
-    console.log(response.data);
-    // Update loan list if needed
-  } catch (error) {
-    console.error("Error rejecting loan:", error);
-    alert("Failed to reject loan.");
-  }
-};
+        `http://localhost:8080/users/${userId}/loan/${applicationNo}`,
+        {
+          status: "Rejected",
+        }
+      );
+      alert("Loan rejected successfully!");
+      setShowModal(false);
+      console.log(response.data);
+      // Update loan list if needed
+    } catch (error) {
+      console.error("Error rejecting loan:", error);
+      alert("Failed to reject loan.");
+    }
+  };
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -121,7 +137,11 @@ const UserDashboard = () => {
 
       <div className="bg-light text-center py-3 border-bottom">
         <h5 className="text-dark m-0">
-          Welcome, <span className="text-primary">{customerName || "Customer"}</span> 👋
+          Welcome,{" "}
+          <span className="text-primary">
+            {localStorage.getItem("userName") || "Customer"}
+          </span>{" "}
+          👋
         </h5>
       </div>
 
@@ -133,11 +153,13 @@ const UserDashboard = () => {
               <Card className="user-dashboard-card shadow rounded-4 p-3 mb-4">
                 <Card.Body className="d-flex flex-column justify-content-between">
                   <Card.Title className="mb-3">Apply For Home Loan</Card.Title>
-                  <Card.Text>
-                    Start a new loan application process.
-                  </Card.Text>
-                  <Button onClick={handleApplyLoan} variant="primary">
-                    Apply Now
+                  <Card.Text>Start a new loan application process.</Card.Text>
+                  <Button
+                    onClick={handleApplyLoan}
+                    variant="primary"
+                    disabled={!canApply}
+                  >
+                    {canApply ? "Apply Now" : "Application In Progress"}
                   </Button>
                 </Card.Body>
               </Card>
@@ -146,7 +168,9 @@ const UserDashboard = () => {
             <Col md={8}>
               <Card className="user-dashboard-card shadow rounded-4 p-3 mb-4">
                 <Card.Body>
-                  <Card.Title className="mb-4">Existing Applications</Card.Title>
+                  <Card.Title className="mb-4">
+                    Existing Applications
+                  </Card.Title>
                   {applications.length > 0 ? (
                     <ul className="list-unstyled">
                       {applications.map((app) => (
@@ -186,45 +210,71 @@ const UserDashboard = () => {
         <Modal.Body>
           {selectedApplication ? (
             <div>
-              <p><strong>Application No:</strong> {selectedApplication.applicationNo}</p>
-              <p><strong>Status:</strong> {selectedApplication.status}</p>
-              <p><strong>Loan Amount:</strong> ₹{selectedApplication.loanAmount}</p>
-              <p><strong>Tenure:</strong> {selectedApplication.tenure} years</p>
-              <p><strong>Interest Rate:</strong> {selectedApplication.interestRate}%</p>
-              
+              <p>
+                <strong>Application No:</strong>{" "}
+                {selectedApplication.applicationNo}
+              </p>
+              <p>
+                <strong>Status:</strong> {selectedApplication.status}
+              </p>
+              <p>
+                <strong>Loan Amount:</strong> ₹{selectedApplication.loanAmount}
+              </p>
+              <p>
+                <strong>Tenure:</strong> {selectedApplication.tenure} years
+              </p>
+              <p>
+                <strong>Interest Rate:</strong>{" "}
+                {selectedApplication.interestRate}%
+              </p>
+
               {/* Add more fields here if needed */}
             </div>
           ) : (
             <p>Loading application details...</p>
           )}
         </Modal.Body>
-         <Modal.Footer>
-                  
-                  {selectedApplication?.status?.trim().toUpperCase() !== "APPROVED" &&
-                    selectedApplication?.status?.trim().toUpperCase() !== "REJECTED" && (
-                      <>
-                  <Button
-  variant="success"
-  onClick={() => handleCustomerApprove(selectedApplication?.applicationNo)}
-  disabled={selectedApplication?.status !== "Pending Customer Approval"}
-  className={selectedApplication?.status !== "Pending Customer Approval" ? "blur-button" : ""}
->
-  Approve
-</Button>
+        <Modal.Footer>
+          {selectedApplication?.status?.trim().toUpperCase() !== "APPROVED" &&
+            selectedApplication?.status?.trim().toUpperCase() !==
+              "REJECTED" && (
+              <>
+                <Button
+                  variant="success"
+                  onClick={() =>
+                    handleCustomerApprove(selectedApplication?.applicationNo)
+                  }
+                  disabled={
+                    selectedApplication?.status !== "Pending Customer Approval"
+                  }
+                  className={
+                    selectedApplication?.status !== "Pending Customer Approval"
+                      ? "blur-button"
+                      : ""
+                  }
+                >
+                  Approve
+                </Button>
 
-<Button
-  variant="danger"
-  onClick={() => handleCustomerReject(selectedApplication?.applicationNo)}
-  disabled={selectedApplication?.status !== "Pending Customer Approval"}
-  className={selectedApplication?.status !== "Pending Customer Approval" ? "blur-button" : ""}
->
-  Reject
-</Button>
-                    </>
-        
-                    )}
-                 
-                </Modal.Footer>
+                <Button
+                  variant="danger"
+                  onClick={() =>
+                    handleCustomerReject(selectedApplication?.applicationNo)
+                  }
+                  disabled={
+                    selectedApplication?.status !== "Pending Customer Approval"
+                  }
+                  className={
+                    selectedApplication?.status !== "Pending Customer Approval"
+                      ? "blur-button"
+                      : ""
+                  }
+                >
+                  Reject
+                </Button>
+              </>
+            )}
+        </Modal.Footer>
       </Modal>
     </div>
   );

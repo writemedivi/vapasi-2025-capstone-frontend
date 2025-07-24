@@ -11,6 +11,9 @@ const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
   const handleOpenModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
 
+   const formatCurrency = (value) =>
+    value ? `₹${parseFloat(value).toLocaleString("en-IN")}` : "₹0";
+
   return (
     <div>
       <h4>Review Checklist</h4>
@@ -18,9 +21,9 @@ const ChecklistReview = ({ formData, acceptedTerms, setAcceptedTerms }) => {
         <li>Personal Details: {formData.fullName}, {formData.email}</li>
         <li>Aadhar: {formData.aadharNo}</li>
         <li>PAN: {formData.panNo}</li>
-        <li>Monthly Income: ₹{formData.monthlyIncome}</li>
-        <li>Property: {formData.location}, ₹{formData.estimatedCost}</li>
-        <li>EMI Amount:{formData.emi}</li>
+       <li>Monthly Income: {formatCurrency(formData.monthlyIncome)}</li>
+        <li>Property: {formData.location}, {formatCurrency(formData.estimatedCost)}</li>
+        <li>Monthly EMI Amount: {formatCurrency(formData.emi)}</li>
         <li>EMI Tenure:{formData.tenure}</li>
       </ul>
 

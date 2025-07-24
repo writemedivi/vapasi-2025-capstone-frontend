@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import DocumentDetails from "../components/user/applyLoan/DocumentDetails";
 import IncomePropertyDetails from "../components/user/applyLoan/IncomePropertyDetails";
-import UploadDocuments from "../components/user/applyLoan/UploadDocuments";
 import ChecklistReview from "../components/user/applyLoan/ChecklistReview";
 import PersonalDetails from "../components/user/applyLoan/PersonalDetails";
 import Header from "../components/Common/Header/Header";
@@ -17,8 +16,7 @@ const LoanApplication = () => {
     { id: 1, step: 1, completed: false, stepName: "Personal Details" },
     { id: 2, step: 2, completed: false, stepName: "Document Details" },
     { id: 3, step: 3, completed: false, stepName: "Income/Property Details" },
-    { id: 4, step: 4, completed: false, stepName: "Upload Document" },
-    { id: 5, step: 5, completed: false, stepName: "Checklist Review" },
+    { id: 4, step: 4, completed: false, stepName: "Checklist Review" },
   ];
 
   const [steps, setSteps] = useState(initialSteps);
@@ -101,12 +99,7 @@ const LoanApplication = () => {
   };
 
   // Step 4: Upload Documents
-  const validateUploadDocuments = () => {
-    const errors = {};
-    if (!formData.aadharDoc) errors.aadharDoc = "Aadhar document is required";
-    if (!formData.panDoc) errors.panDoc = "PAN document is required";
-    return errors;
-  };
+
 
   const prevHandler = () => {
     setFormErrors({});
@@ -118,7 +111,6 @@ const LoanApplication = () => {
     if (currentStep === 1) errors = validatePersonalDetails();
     else if (currentStep === 2) errors = validateDocumentDetails();
     else if (currentStep === 3) errors = validateIncomePropertyDetails();
-    else if (currentStep === 4) errors = validateUploadDocuments();
 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
@@ -137,10 +129,9 @@ const LoanApplication = () => {
     try {
       const formPayload = new FormData();
       for (const key in formData) {
-        if(key!=="aadharDoc" && key!=="panDoc")
-        {
+        
         formPayload.append(key, formData[key]);
-        }
+        
       }
 
       const url="http://localhost:8080/users/"+localStorage.getItem("userId")+"/loan";
@@ -195,15 +186,8 @@ const LoanApplication = () => {
             formErrors={formErrors}
           />
         );
+    
       case 4:
-        return (
-          <UploadDocuments
-            formData={formData}
-            setFormData={setFormData}
-            formErrors={formErrors}
-          />
-        );
-      case 5:
         return <ChecklistReview formData={formData} 
         acceptedTerms={acceptedTerms}
       setAcceptedTerms={setAcceptedTerms}/>;

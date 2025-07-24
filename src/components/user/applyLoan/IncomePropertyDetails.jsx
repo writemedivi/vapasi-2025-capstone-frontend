@@ -152,19 +152,25 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
       </Form.Group>
 
       <Form.Group>
-        <Form.Label>Loan Tenure (in years)</Form.Label>
-        <Form.Control
-          type="number"
-          name="tenure"
-          value={formData.tenure || ""}
-          onChange={handleChange}
-          isInvalid={!!formErrors?.tenure}
-          placeholder="Enter loan tenure in years"
-        />
-        <Form.Control.Feedback type="invalid">
-          {formErrors?.tenure}
-        </Form.Control.Feedback>
-      </Form.Group>
+  <Form.Label>Loan Tenure (in years)</Form.Label>
+  <Form.Control
+    as="select"
+    name="tenure"
+    value={formData.tenure || ""}
+    onChange={handleChange}
+    isInvalid={!!formErrors?.tenure}
+  >
+    <option value="">Select tenure</option>
+    <option value="5">5 Years</option>
+    <option value="10">10 Years</option>
+    <option value="15">15 Years</option>
+    <option value="20">20 Years</option>
+  </Form.Control>
+  <Form.Control.Feedback type="invalid">
+    {formErrors?.tenure}
+  </Form.Control.Feedback>
+</Form.Group>
+
 
       <Form.Group>
         <Form.Label>Estimated EMI (<strong>Rate of Interest is 8.5%</strong>)</Form.Label>

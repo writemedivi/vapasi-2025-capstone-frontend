@@ -75,7 +75,8 @@ const handleSubmit = async (e) => {
     );
     console.log("Login successful", response.data);
     localStorage.setItem("userId", response.data.data.id);
-    alert("Login successful!");
+    localStorage.setItem("userName", response.data.data.name);
+
     navigate("/customer-dashboard");
   } catch (error) {
     console.error("Login failed", error);
