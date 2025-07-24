@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Card,
   Row,
@@ -20,13 +20,34 @@ const AdminDashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedLoan, setSelectedLoan] = useState(null);
   const [remarks, setRemarks] = useState("");
+  const [loanData, setLoanData] = useState([]);
 
-  const loanData = [
-    { id: 1, name: "Amit", amount: "₹5,00,000", status: "Pending Admin Approval", email: "amit@example.com", mobile: "9876543210", pan: "ABCDE1234F" },
-    { id: 2, name: "Priya", amount: "₹10,00,000", status: "Pending Customer Approval", email: "priya@example.com", mobile: "7890123456", pan: "XYZAB5678C" },
-    { id: 3, name: "Rahul", amount: "₹3,00,000", status: "Approved", email: "rahul@example.com", mobile: "9012345678", pan: "PQRST9012D" },
-    { id: 4, name: "Anjali", amount: "₹8,00,000", status: "Rejected", email: "anjali@example.com", mobile: "7654321098", pan: "LMNOP3456Z" },
-  ];
+
+  useEffect(() => {
+  axios.get("http://localhost:8080/admin/users")
+    .then(response => {
+      const formattedData = response.data.map((item) => ({
+        id: item.loginId,
+        customerId: item.customerId,
+        loanId: item.loanId,
+        email: item.email,
+        mobile: item.mobileNo,
+        applicationNo: item.applicationNo,
+        name: item.name,
+        propertyName: item.propertyName,
+        location: item.location,
+        amount: `₹${item.loanAmount.toLocaleString("en-IN")}`,
+        status: item.status,
+        tenure: item.tenure,
+        pan: item.panNo
+      }));
+      setLoanData(formattedData);
+    })
+    .catch(error => {
+      console.error("Error fetching users:", error);
+      alert("Failed to load loan data");
+    });
+}, []);
 
   const navigate = useNavigate();
   const statusList = ["All", "Pending Admin Approval", "Pending Customer Approval", "Approved", "Rejected"];
@@ -65,13 +86,13 @@ const AdminDashboard = () => {
     setShowModal(true);
   };
 
-  const handleApprove = async (loanId) => {
+  const handleApprove = async () => {
     try {
-      const response = await axios.put(`http://localhost:8080/loan/approve/${loanId}`);
+      const response = await axios.put(`http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=approve`);
       alert("Loan approved successfully!");
       setShowModal(false);
       console.log(response.data);
-      // Reload the loan list or update state as needed
+      
     } catch (error) {
       console.error("Error approving loan:", error);
       alert("Failed to approve loan.");
@@ -79,11 +100,11 @@ const AdminDashboard = () => {
   };
   const handleReject = async (loanId) => {
   try {
-    const response = await axios.put(`http://localhost:8080/loan/reject/${loanId}`);
+    const response = await axios.put(`http://localhost:8080/admin/users/${selectedLoan.customerId}/loan/${selectedLoan.applicationNo}?action=reject`);
     alert("Loan rejected successfully!");
     setShowModal(false);
     console.log(response.data);
-    // Update loan list if needed
+    
   } catch (error) {
     console.error("Error rejecting loan:", error);
     alert("Failed to reject loan.");
@@ -142,7 +163,8 @@ const AdminDashboard = () => {
         <Table striped bordered hover responsive className="shadow-sm">
           <thead className="table-light">
             <tr>
-              <th>#</th>
+              <th>Sr</th>
+              <th>Application No</th>
               <th>Customer</th>
               <th>Loan Amount</th>
               <th>Status</th>
@@ -153,6 +175,7 @@ const AdminDashboard = () => {
             {filteredLoans.map((loan) => (
               <tr key={loan.id}>
                 <td>{loan.id}</td>
+                <td>{loan.applicationNo}</td>
                 <td>{loan.name}</td>
                 <td>{loan.amount}</td>
                 <td>
@@ -191,11 +214,16 @@ const AdminDashboard = () => {
           {selectedLoan && (
             <div>
               <p><strong>Name:</strong> {selectedLoan.name}</p>
-              <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
-              <p><strong>Status:</strong> {selectedLoan.status}</p>
               <p><strong>Email:</strong> {selectedLoan.email}</p>
               <p><strong>Mobile:</strong> {selectedLoan.mobile}</p>
+              <p><strong>Customer Id:</strong> {selectedLoan.customerId}</p>
+              <p><strong>Application No:</strong> {selectedLoan.applicationNo}</p>
+              <p><strong>Property Name:</strong> {selectedLoan.propertyName}</p>
+              <p><strong>Location:</strong> {selectedLoan.location}</p>
+              <p><strong>Loan Amount:</strong> {selectedLoan.amount}</p>
+              <p><strong>Tenure:</strong> {selectedLoan.tenure}</p>
               <p><strong>PAN:</strong> {selectedLoan.pan}</p>
+              <p><strong>Status:</strong> {selectedLoan.status}</p>
             {/* Textbox for remarks */}
         <div className="mt-3">
           <label htmlFor="remarks"><strong>Remarks</strong></label>
@@ -214,7 +242,8 @@ const AdminDashboard = () => {
         <Modal.Footer>
           
           {selectedLoan?.status?.trim().toUpperCase() !== "APPROVED" &&
-            selectedLoan?.status?.trim().toUpperCase() !== "REJECTED" && (
+            selectedLoan?.status?.trim().toUpperCase() !== "REJECTED" && 
+            selectedLoan?.status?.trim().toUpperCase() !== "PENDING CUSTOMER APPROVAL" &&(
               <>
               <Button variant="success" onClick={() => handleApprove(selectedLoan.id)}>
                 Approve
