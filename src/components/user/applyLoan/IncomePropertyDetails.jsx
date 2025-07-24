@@ -1,26 +1,23 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form } from "react-bootstrap";
 
 const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
+  const [eligibleAmount, setEligibleAmount] = useState(null);
+  const [loanWarning, setLoanWarning] = useState("");
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  // EMI calculation logic
+  // Calculate EMI based on current form data
   const calculateEMI = () => {
     const principal = parseFloat(formData.loanAmount);
-    const rate = 8.5 / 12 / 100; // monthly interest rate (8.5% annual)
-    const n = parseFloat(formData.tenure)*12; // assuming tenure in months
+    const rate = 8.5 / 12 / 100;
+    const n = parseFloat(formData.tenure) * 12;
 
-    if (!principal || !rate || !n || principal < 0) {
+    if (!principal || !rate || !n || principal < 100000) {
       setFormData((prev) => ({ ...prev, emi: "" }));
-      return;
-    }
-
-    if (principal < 100000) {
-      setFormData((prev) => ({ ...prev, emi: "" }));
-      alert("Loan amount should be at least ₹1,00,000");
       return;
     }
 
@@ -34,12 +31,38 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
     }));
   };
 
-  // Recalculate EMI when loanAmount or tenure changes
+  // Calculate maximum eligible loan and validate
+  const validateLoanAmount = () => {
+    const income = parseFloat(formData.monthlyIncome);
+    const requestedLoan = parseFloat(formData.loanAmount);
+
+    if (!income || income <= 0 || !requestedLoan) {
+      setEligibleAmount(null);
+      setLoanWarning("");
+      return;
+    }
+
+    const maxEligible = 60 * 0.6 * income;
+    setEligibleAmount(maxEligible.toFixed(0));
+
+    // Validation logic
+    if (requestedLoan < 100000) {
+      setLoanWarning("Minimum loan amount is ₹1,00,000.");
+    } else if (requestedLoan > maxEligible) {
+      setLoanWarning(`Requested amount exceeds eligibility. Max allowed: ₹${maxEligible.toFixed(0)}.`);
+    } else {
+      setLoanWarning(""); // Valid case
+    }
+  };
+
+  // Run validations and calculations on relevant changes
   useEffect(() => {
+    validateLoanAmount();
+
     if (formData.loanAmount && formData.tenure) {
       calculateEMI();
     }
-  }, [formData.loanAmount, formData.tenure]);
+  }, [formData.loanAmount, formData.tenure, formData.monthlyIncome]);
 
   return (
     <Form>
@@ -103,6 +126,11 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Control.Feedback type="invalid">
           {formErrors?.monthlyIncome}
         </Form.Control.Feedback>
+        {eligibleAmount && (
+          <small className="text-muted">
+            Eligible Loan Amount: ₹{eligibleAmount}
+          </small>
+        )}
       </Form.Group>
 
       <Form.Group>
@@ -118,6 +146,9 @@ const IncomePropertyDetails = ({ formData, setFormData, formErrors }) => {
         <Form.Control.Feedback type="invalid">
           {formErrors?.loanAmount}
         </Form.Control.Feedback>
+        {loanWarning && (
+          <small style={{ color: "red" }}>{loanWarning}</small>
+        )}
       </Form.Group>
 
       <Form.Group>
